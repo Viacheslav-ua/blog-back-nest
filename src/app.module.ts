@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AppService } from './app.service';
         migrations: ['dist/**/db/migrations/*{.ts,.js}'],
       }),
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
