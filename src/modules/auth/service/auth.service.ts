@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import { Injectable } from '@nestjs/common';
 import { Admin } from 'src/modules/admin/model/admin';
 import { AdminRepository } from 'src/modules/admin/service/admin.repository';
@@ -11,6 +9,7 @@ export class AuthService {
   async validateAdmin(login: string, pass: string): Promise<Admin> {
     const admin = await this.adminRepository.findByLogin(login);
     if (admin && admin.password === pass) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...secureAdmin } = admin;
       return secureAdmin;
     }
