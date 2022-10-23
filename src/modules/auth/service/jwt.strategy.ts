@@ -18,6 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { iat, exp, ...res } = payload;
     return res;
   }
