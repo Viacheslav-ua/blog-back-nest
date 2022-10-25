@@ -1,20 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Admin } from 'src/modules/admin/model/admin';
-import { AdminRepository } from 'src/modules/admin/service/admin.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Admin } from 'src/modules/admin/model/admin.entity';
+import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private adminRepository: AdminRepository,
+    @InjectRepository(Admin)
+    private adminRepository: Repository<Admin>,
     private jwtService: JwtService,
   ) {}
 
   async validateAdmin(login: string, pass: string): Promise<Admin> {
-    const admin = await this.adminRepository.findByLogin(login);
-    if (admin && admin.password === pass) {
+    const admin = await this.adminRepository.findOne({
+      where: { login },
+    });
+    if (admin && (await bcrypt.compare(pass, admin.passwordHash))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...secureAdmin } = admin;
+      const { passwordHash, ...secureAdmin } = admin;
       return secureAdmin;
     }
     return null;
@@ -25,5 +30,10 @@ export class AuthService {
     return {
       accessToken: this.jwtService.sign(payload),
     };
+  }
+
+  async findAdmin(id: number) {
+    const admin = await this.adminRepository.findOne({ where: { id } });
+    return admin;
   }
 }

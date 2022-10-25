@@ -5,6 +5,7 @@
 
 #Env
 .env
+data-sours.ts
 
 # Logs
 logs

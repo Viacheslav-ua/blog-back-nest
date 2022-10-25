@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+// import { Admin } from './modules/admin/model/admin.entity';
 import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
@@ -20,7 +21,8 @@ import { AuthModule } from './modules/auth/auth.module';
         password: config.get<string>('TYPEORM_PASSWORD'),
         database: config.get<string>('TYPEORM_DATABASE'),
         port: Number(config.get<number>('TYPEORM_PORT')),
-        entities: [__dirname + 'dist/**/*.entity{.ts, .js}'],
+        entities: ['dist/**/*.entity{.ts, .js}'],
+        // entities: [Admin],
         dropSchema: false,
         synchronize: true,
         migrationsRun: false,
